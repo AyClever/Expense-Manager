@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Login -Page</title>
+	<link rel="stylesheet" href="{{url_for ('static', filename= 'assets/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{url_for ('static', filename= 'assets/css/font-awesome.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{url_for ('static', filename= 'assets/css/style.css') }}">
+
+	</head>
+<body>
+	<header class="sticky-top">
+			<nav class="d-flex p-3 bg-color align-items-center">
+				<div class="brand">
+					<h5 class="text-white font-weight-bold">EXPENSE MANAGER</h5>
+				</div>
+				<div class="tab ml-auto">
+					<a  href="{{ url_for('logout') }}" class="btn bg-outline text-white">
+						<i class="fa fa-power-off"></i>
+						Logout
+					</a>
+				</div>
+			</nav>
+		</header>
+	<div class="container-fluid">
+
+		<main class="main">
+			<nav class="p-2 border-bottom d-flex align-items-center">
+				<div class="filter-toggle d-flex align-items-center" onclick="openFilter()">
+					<span class="mr-2" id="filter-toggler">
+						<i class="fa fa-filter fa-lg"></i>
+					</span>
+					<h5 class="">Filter</h5>
+				</div>
+				<div class="mx-auto">
+					Reimbursement Fee:
+					<span class="" style="font-size: 20px;font-weight: 600;">${{total}}</span>
+				</div>
+			</nav>
+						<div class="m-0">
+				<section class="p-0 expense-board">
+					<div class="filter" id="filter">
+						<div class="border-bottom d-flex align-items-center">
+							<p class="p-2">Filter</p>
+							<span class="btn ml-auto" onclick="closeFilter()">
+								<i class="fa fa-times"></i>
+							</span>
+						</div>
+						<form action="{{url_for('from_filter')}}" method="POST" class="mt-3">
+							<div class="form-group filter-item">
+								<label for="from">From</label>
+								<input name="date1" type="date" class="form-control" />
+							</div>
+							<div class="form-group filter-item">
+								<label for="from">To</label>
+								<input name="date2" type="date" class="form-control" />
+							</div>
+							<div class="form-group filter-item">
+								<label for="from">From</label>
+								<input name="date3" type="date" class="form-control" />
+							</div>
+							<div class="form-group filter-item">
+								<label for="from">To</label>
+								<input name="date4" type="date" class="form-control" />
+							</div>
+							<div class="form-group">
+                        <button type="submit" class="btn bg-color">
+                            Filter
+                        </button>
+                    </div>
+						</form>
+					</div>
+				</section>
+	<section class="p-0 expense-board">
+				<form action="{{url_for('new')}}" method="POST" class="mt-3">
+					<div class="board" id="board">
+						<div class="exp-tbl">
+							<ul class="tbl-head sticky-top">
+								<li class="tbl-item">Date</li>
+								<li class="tbl-item">Merchant</li>
+								<li class="tbl-item">Amount</li>
+								<li class="tbl-item">Status</li>
+								<li class="tbl-item">Action</li>
+							</ul>
+								<div class="tbl-body w-100 scrollable">
+									{% for ord in order %}
+										<ul class="tbl-row">
+												<li class="tbl-item">{{ord.date}}</li>
+												<li class="tbl-item">{{ord.merchant}}</li>
+												<li class="tbl-item">${{ord.amount}}</li>
+												<li class="tbl-item">
+													<span class="badge badge-success">success</span>
+												</li>
+												<li class="tbl-item">
+													<a href="{{url_for('edit', view=ord.id)}}" type="button" class="btn btn-warning">
+														<i class="fas fa-edit"></i>
+													</a>
+													<a href="{{url_for('delete', view=ord.id)}}" type="button" class="btn btn-danger">
+														<i class="fas fa-trash"></i>
+													</a>
+												</li>
+										</ul>
+									{% endfor %}
+								</div>
+						</div>
+					</div>
+				</form>
+			</section>
+			<section class="add-expense">
+					<div class="p-2">
+						<div class="border-bottom">
+							<p class="p-">Add Expense</p>
+						</div>
+						<form action="{{url_for('dashboard')}}" method="POST" class="mt-3">
+							<div class="form-group">
+                        <label for="from" class="form-label">Merchant</label>
+                        <select class="form-control" name="merchant">
+                            <option value="hotel">Hotel</option>
+                            <option value="restaurant">Restaurant</option>
+                            <option value="hospital">Hospital</option>
+                            <option value="rental car">Rental Car</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="airline">Airline</option>
+                        </select>
+                    </div>
+                    <div class="form-group ">
+                        <label for="from" class="form-label">Amount</label>
+                        <input type="number" name="amount" min="0" max="1000000000" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="from" class="form-label">Date</label>
+                        <input type="date" name="date" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="from" class="form-label">Remark</label>
+                        <textarea name="remark" class="form-control" maxlength="1500" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+<!--                        <label for="receipt" class="btn form-label">Upload Receipt-->
+<!--                            <input type="file" id="receipt" hidden name="" class="form-control" />-->
+<!--                        </label>-->
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn bg-color">
+                            Submit
+                        </button>
+                    </div>
+						</form>
+					</div>
+				</section>
+			</main>
+	</div>
+	<script src="{{url_for ('static', filename= 'assets/js/jquery.slim.min.js')}}"></script>
+	<script src="{{url_for ('static', filename= 'assets/js/popper.min.js')}}"></script>
+	<script src="{{url_for ('static', filename= 'assets/js/bootstrap.bundle.min.js')}}"></script>
+	<script type="text/javascript">
+		const FILTER = document.querySelector("#filter");
+		const BOARD = document.querySelector("#board");
+		const RECEIPT = document.querySelector("#receipt");
+		function closeFilter(){
+			FILTER.style.display = "none";
+			BOARD.style.marginLeft = "0em";
+			BOARD.style.width = "75%";
+		}
+		function openFilter(){
+			FILTER.style.display = "block";
+			BOARD.style.marginLeft = "18em";
+			BOARD.style.width = "54%";
+		}
+		RECEIPT.onchange = function(event){
+			// alert(RECEIPT.files[0]);
+			alert("SSDDD");
+		}
+	</script>
+</body>
+</html>
